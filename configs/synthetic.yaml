@@ -1,0 +1,77 @@
+# 模拟数据集配置文件
+
+# 数据配置
+data:
+  data_path: "data/raw/synthetic_traffic.npz"
+  adj_path: "data/raw/synthetic_adj.npy"
+  hist_len: 12
+  pred_len: 12
+  train_ratio: 0.7
+  val_ratio: 0.1
+  normalize_method: "zscore"
+  missing_value_method: "linear"
+
+# 模型配置 (较小的模型用于快速测试)
+model:
+  num_nodes: 50
+  input_dim: 1
+  d_model: 32
+  n_heads: 4
+  n_layers: 2
+  ff_dim: 64
+  dropout: 0.1
+  use_time_features: false
+  use_graph_conv: false
+  causal: false
+  activation: "gelu"
+
+# 训练配置 (较少的epoch用于测试)
+training:
+  batch_size: 16
+  epochs: 10
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  gradient_clip: 5.0
+  early_stopping_patience: 5
+  scheduler: "cosine"
+  warmup_epochs: 1
+  num_workers: 0
+
+# 损失函数配置
+loss:
+  type: "mae"
+  huber_delta: 1.0
+
+# 评估配置
+evaluation:
+  horizons: [3, 6, 12]
+  interval_minutes: 5
+  metrics: ["MAE", "RMSE", "MAPE"]
+
+# 拥堵分析配置
+congestion:
+  thresholds:
+    free_flow: [0.0, 0.3]
+    slow: [0.3, 0.5]
+    congested: [0.5, 0.7]
+    severe: [0.7, 1.0]
+
+# 保存配置
+save:
+  checkpoint_dir: "checkpoints"
+  log_dir: "logs"
+  save_best_only: true
+  save_frequency: 5
+
+# 设备配置
+device:
+  use_cuda: true
+  gpu_id: 0
+  seed: 42
+
+# 可视化配置
+visualization:
+  plot_attention: false
+  plot_predictions: true
+  save_figures: true
+  figure_dir: "figures"
